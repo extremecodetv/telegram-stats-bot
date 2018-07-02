@@ -10,9 +10,9 @@ const handleAsync = (msg) => {
     lock.acquire('message', async () => await handle(msg)); //eslint-disable-line
 };
 
-const webHookMode = async () => {
+const webHookMode = async (webHookUrl) => {
     await bot.deleteWebHook();
-    await bot.setWebHook('https://db2e6b78.ngrok.io/bot');
+    await bot.setWebHook(webHookUrl);
     app.listen(3001, () => {
         bot.on('message', handleAsync);
     });
@@ -23,5 +23,16 @@ const longPollingMode = async () => {
 };
 
 (async () => {
-    await longPollingMode();
+    const longPolling = process.env.LONG_POLLING.indexOf('true') !== -1;
+
+    if (longPolling) {
+        await longPollingMode();
+    } else {
+        const webHookUrl = process.env.WEBHOOK_URL;
+        if (!webHookUrl) {
+            throw Error('Web hook url is empty');
+        }
+
+        await webHookMode(webHookUrl);
+    }
 })();
