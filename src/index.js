@@ -13,7 +13,8 @@ const handleAsync = (msg) => {
 const webHookMode = async (webHookUrl) => {
     await bot.deleteWebHook();
     await bot.setWebHook(webHookUrl);
-    app.listen(3001, () => {
+    const port = Number(process.env.EXPRESS_APP_PORT);
+    app.listen(port, () => {
         bot.on('message', handleAsync);
     });
 };
