@@ -1,5 +1,5 @@
 const { bot } = require('./config');
-const { handle } = require('./handler');
+const { handle, handelUser } = require('./handler');
 const AsyncLock = require('async-lock');
 const app = require('./express');
 
