@@ -1,14 +1,19 @@
-require('dotenv').config();
+const { join } = require('path');
+const { config } = require('dotenv');
+
+config({ path: join(__dirname, './../../.env') });
+const {
+    DB_USER,
+    DB_PASSWORD,
+    DB_NAME,
+    DB_HOST
+} = process.env;
+
+const url = `mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:3306/${DB_NAME}`;
 
 module.exports = {
     development: {
-        url: process.env.DB_URI,
-        dialect: 'mysql',
-        define: {
-            charset: 'utf8mb4',
-            dialectOptions: {
-                collate: 'utf8mb4_general_ci'
-            }
-        }
+        url,
+        dialect: 'mysql'
     }
 };

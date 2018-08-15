@@ -1,5 +1,5 @@
 const { bot } = require('./config');
-const { handle, handelUser } = require('./handler');
+const { handle } = require('./handler');
 const AsyncLock = require('async-lock');
 const app = require('./express');
 
@@ -11,27 +11,17 @@ const handleAsync = (msg) => {
 const webHookMode = async (webHookUrl) => {
     await bot.deleteWebHook();
     await bot.setWebHook(webHookUrl);
-    const port = Number(process.env.EXPRESS_APP_PORT);
+    const port = Number(process.env.PORT);
     app.listen(port, () => {
         bot.on('message', handleAsync);
     });
 };
 
-const longPollingMode = async () => {
-    bot.on('message', handleAsync);
-};
-
 (async () => {
-    const longPolling = process.env.LONG_POLLING.indexOf('true') !== -1;
-
-    if (longPolling) {
-        await longPollingMode();
-    } else {
-        const webHookUrl = process.env.WEBHOOK_URL;
-        if (!webHookUrl) {
-            throw Error('Web hook url is empty');
-        }
-
-        await webHookMode(webHookUrl);
+    const webHookUrl = process.env.WEBHOOK_URL;
+    if (!webHookUrl) {
+        throw Error('Web hook url is empty');
     }
+
+    await webHookMode(webHookUrl);
 })();
