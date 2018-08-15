@@ -6,3 +6,4 @@ package-lock.json
 *.log
 .env
 /db/config.json
+mysql_data
