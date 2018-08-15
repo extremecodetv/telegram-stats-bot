@@ -104,27 +104,8 @@ const countAndSave = async (message, activity) => {
     return activity.save();
 };
 
-const checkAndDelete = async (msg) => {
-    const chatId = msg.chat.id;
-    const messageId = msg.message_id;
-    const userId = msg.from.id;
-    const username = `${msg.from.first_name} ${msg.from.last_name}`;
-
-    if (username.length >= 100) {
-        await bot.deleteMessage(chatId, messageId);
-        await bot.kickChatMember(chatId, userId);
-        return true;
-    }
-    return false;
-};
-
 exports.handle = async (msg) => {
     try {
-        const deleted = await checkAndDelete(msg);
-        if (deleted) {
-            return;
-        }
-        
         const chat = await getChat(msg.chat);
         const profile = await getProfile(msg, chat);
         const activity = profile.ChatUsers.shift().Activity;
