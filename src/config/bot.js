@@ -7,8 +7,7 @@ const requestOptions = { };
 module.exports = (() => { /* eslint-disable-line */
     try {
         const isProxyRequired = process.env.PROXY_REQUIRED.indexOf('true') !== -1;
-        const longPolling = process.env.LONG_POLLING.indexOf('true') !== -1;
-        if (process.env.NODE_ENV === 'development' || isProxyRequired) {
+        if (isProxyRequired) {
             requestOptions.agentClass = Agent;
             requestOptions.agentOptions = { // *bang* This is America (Russia)
                 socksHost: process.env.PROXY_SOCKS5_HOST,
@@ -19,7 +18,7 @@ module.exports = (() => { /* eslint-disable-line */
         }
 
         const bot = new TelegramBot(process.env.BOT_TOKEN, {
-            polling: longPolling,
+            polling: false,
             request: requestOptions
         });
 
