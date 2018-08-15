@@ -18,6 +18,8 @@ npm run start
 
 ### Docker
 
+Настроить переменные окружения в .env файле
+
 ```bash
 docker-compose up --build --detach
 ```
