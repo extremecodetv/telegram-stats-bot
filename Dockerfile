@@ -9,7 +9,6 @@ RUN npm i -g sequelize-cli
 
 COPY . .
 
-ARG EXPRESS_APP_PORT
-EXPOSE ${EXPRESS_APP_PORT}
+EXPOSE $PORT
 
 CMD ["sh", "-c", "sequelize db:migrate && npm start"]
