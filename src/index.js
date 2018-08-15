@@ -3,8 +3,6 @@ const { handle, handelUser } = require('./handler');
 const AsyncLock = require('async-lock');
 const app = require('./express');
 
-// NodeJS: 0
-// Artem Vitalyevich: 1
 const lock = new AsyncLock();
 const handleAsync = (msg) => {
     lock.acquire('message', async () => await handle(msg)); //eslint-disable-line
